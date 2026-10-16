@@ -174,7 +174,7 @@ export function App() {
             <p className="text-xs text-text-muted mb-6">Complete a simulation to view your personalized evidence debrief.</p>
             <button
               onClick={() => handleNavigate('/scenarios/prod-incident')}
-              className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold"
+              className="px-4 py-2 bg-primary text-background rounded-md text-sm font-medium"
             >
               Start Production Incident
             </button>
@@ -219,7 +219,7 @@ export function App() {
   const isSimulationActive = currentPath.startsWith('/simulation/') && !currentPath.endsWith('/complete');
 
   return (
-    <div className="min-h-screen bg-background text-text-main selection:bg-primary/30 selection:text-white">
+    <div className="min-h-screen bg-background text-text-main selection:bg-primary/15 selection:text-text-main">
       {!isSimulationActive && (
         <Navbar currentPath={currentPath} onNavigate={handleNavigate} />
       )}

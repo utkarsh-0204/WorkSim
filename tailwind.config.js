@@ -7,36 +7,36 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#0B0D11',
+        background: '#F6F6F2',
         surface: {
-          DEFAULT: '#12161F',
-          subtle: '#181D28',
-          border: '#232936',
-          hover: '#1E2432',
+          DEFAULT: '#FFFFFF',
+          subtle: '#EFEEE8',
+          border: '#DCDBD2',
+          hover: '#E7E6DF',
         },
         primary: {
-          DEFAULT: '#6366F1', // Indigo
-          hover: '#4F46E5',
-          light: '#818CF8',
-          muted: '#312E81',
+          DEFAULT: '#16202B',
+          hover: '#293642',
+          light: '#4B5B69',
+          muted: '#E7E9E6',
         },
         accent: {
-          purple: '#8B5CF6',
-          teal: '#14B8A6',
-          amber: '#F59E0B',
-          emerald: '#10B981',
-          rose: '#F43F5E',
+          purple: '#46586B',
+          teal: '#3F7A52',
+          amber: '#A3730F',
+          emerald: '#3F7A52',
+          rose: '#A8432E',
         },
         text: {
-          main: '#F3F4F6',
-          muted: '#9CA3AF',
-          dim: '#6B7280',
+          main: '#1A2229',
+          muted: '#5B6168',
+          dim: '#8B8E8A',
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Menlo', 'Monaco', 'Courier New', 'monospace'],
-        handwriting: ['Caveat', 'cursive', 'sans-serif'],
+        sans: ['"IBM Plex Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['"Source Serif 4"', 'Georgia', 'serif'],
+        mono: ['"IBM Plex Mono"', 'Menlo', 'Monaco', 'Courier New', 'monospace'],
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

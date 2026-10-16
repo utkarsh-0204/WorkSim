@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
-import { 
-  Sparkles, 
-  ArrowRight, 
-  FileText, 
-  Clock, 
-  Layers, 
-  CheckCircle2, 
-  Cpu, 
-  User, 
-  AlertCircle
+import {
+  Sparkles,
+  Cpu,
+  User,
+  CheckCircle2,
 } from 'lucide-react';
 import { Scenario } from '../types';
 
@@ -46,11 +41,11 @@ export const GenerateScenarioPage: React.FC<GenerateScenarioPageProps> = ({ onSt
 
   const handleGenerate = () => {
     setIsGenerating(true);
-    
+
     // Simulate AI parsing JD & synthesizing high-fidelity workplace scenario
     setTimeout(() => {
       const isBackend = jobDescription.toLowerCase().includes('backend') || jobDescription.toLowerCase().includes('engineer') || jobDescription.toLowerCase().includes('api');
-      
+
       const newScenario: Scenario = isBackend ? {
         id: `gen-${Date.now()}`,
         title: 'P0 API Latency Degradation After Release',
@@ -126,14 +121,14 @@ export const GenerateScenarioPage: React.FC<GenerateScenarioPageProps> = ({ onSt
   return (
     <div className="min-h-screen bg-background text-text-main py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-8">
-        
+
         {/* Title */}
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary-light text-xs font-mono font-medium mb-3">
+          <div className="inline-flex items-center gap-1.5 text-xs text-text-dim mb-3">
             <Sparkles className="w-3.5 h-3.5 text-accent-purple" />
-            AI Generator • Custom Workplace Scenario Engine
+            AI Generator · Custom workplace scenario engine
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+          <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-text-main tracking-tight">
             Generate a Workplace Scenario
           </h1>
           <p className="text-sm text-text-muted mt-2">
@@ -142,23 +137,23 @@ export const GenerateScenarioPage: React.FC<GenerateScenarioPageProps> = ({ onSt
         </div>
 
         {/* Input Box */}
-        <div className="rounded-2xl border border-surface-border bg-surface p-6 sm:p-8 space-y-4">
+        <div className="rounded-lg border border-surface-border bg-surface p-6 sm:p-8 space-y-4">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-mono uppercase tracking-wider text-text-dim">
-              Target Job Description
+            <label className="text-xs text-text-dim">
+              Target job description
             </label>
             <div className="flex items-center gap-2">
               <span className="text-xs text-text-dim">Quick sample:</span>
               <button
                 onClick={() => setJobDescription(SAMPLE_JOB_DESCRIPTIONS[0].text)}
-                className="text-xs text-primary hover:text-primary-light transition-colors"
+                className="text-xs text-primary hover:text-primary-light transition-colors cursor-pointer"
               >
                 Backend Engineer
               </button>
-              <span className="text-text-dim">•</span>
+              <span className="text-text-dim">·</span>
               <button
                 onClick={() => setJobDescription(SAMPLE_JOB_DESCRIPTIONS[1].text)}
-                className="text-xs text-primary hover:text-primary-light transition-colors"
+                className="text-xs text-primary hover:text-primary-light transition-colors cursor-pointer"
               >
                 Product Manager
               </button>
@@ -170,18 +165,18 @@ export const GenerateScenarioPage: React.FC<GenerateScenarioPageProps> = ({ onSt
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
             placeholder="Paste complete job description requirements here..."
-            className="w-full bg-background border border-surface-border rounded-xl p-4 text-xs font-mono text-white placeholder-text-dim focus:outline-none focus:border-primary transition-colors leading-relaxed"
+            className="w-full bg-surface-subtle border border-surface-border rounded-md p-4 text-xs text-text-main placeholder-text-dim focus:outline-none focus:border-primary-light transition-colors leading-relaxed"
           />
 
           <button
             onClick={handleGenerate}
             disabled={isGenerating || !jobDescription.trim()}
-            className="w-full py-3.5 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-primary-hover disabled:opacity-50 transition-all flex items-center justify-center gap-2 shadow-md shadow-primary/25"
+            className="w-full py-3.5 rounded-md text-sm font-semibold text-background bg-primary hover:bg-primary-hover disabled:opacity-50 transition-colors flex items-center justify-center gap-2 cursor-pointer"
           >
             {isGenerating ? (
               <>
                 <Cpu className="w-4 h-4 animate-spin" />
-                <span>Analyzing JD & Generating Roleplay Scenario...</span>
+                <span>Analyzing JD & generating roleplay scenario...</span>
               </>
             ) : (
               <>
@@ -194,49 +189,47 @@ export const GenerateScenarioPage: React.FC<GenerateScenarioPageProps> = ({ onSt
 
         {/* GENERATED SCENARIO PREVIEW */}
         {generatedScenario && (
-          <div className="rounded-2xl border border-primary/30 bg-surface p-6 sm:p-8 space-y-6 shadow-2xl animate-in fade-in duration-300">
+          <div className="rounded-lg border border-surface-border bg-surface p-6 sm:p-8 space-y-6 shadow-sm animate-in fade-in duration-300">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono px-2.5 py-1 rounded bg-accent-emerald/10 text-accent-emerald border border-accent-emerald/20">
-                Generated from Job Description
+              <span className="text-xs px-2.5 py-1 rounded bg-accent-emerald/10 text-accent-emerald border border-accent-emerald/20">
+                Generated from job description
               </span>
-              <span className="text-xs font-mono text-text-dim">
+              <span className="text-xs text-text-dim">
                 Estimated: {generatedScenario.duration}
               </span>
             </div>
 
             <div>
-              <h2 className="text-2xl font-bold text-white mb-2">{generatedScenario.title}</h2>
+              <h2 className="text-2xl font-semibold text-text-main mb-2">{generatedScenario.title}</h2>
               <p className="text-xs text-text-muted leading-relaxed">{generatedScenario.description}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-surface-subtle border border-surface-border">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-text-dim block mb-2">
-                  Generated Persona
+              <div className="p-4 rounded-md bg-surface-subtle border border-surface-border">
+                <span className="text-xs text-text-dim block mb-2">
+                  Generated persona
                 </span>
                 <div className="flex items-center gap-3">
-                  <img 
-                    src={generatedScenario.character.avatar} 
-                    alt={generatedScenario.character.name} 
-                    className="w-9 h-9 rounded-full border border-surface-border object-cover" 
-                  />
+                  <div className="w-9 h-9 rounded-full bg-primary-muted border border-surface-border flex items-center justify-center text-[11px] font-medium text-text-main shrink-0">
+                    {generatedScenario.character.name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase()}
+                  </div>
                   <div>
-                    <div className="text-xs font-semibold text-white">{generatedScenario.character.name}</div>
+                    <div className="text-xs font-semibold text-text-main">{generatedScenario.character.name}</div>
                     <div className="text-[11px] text-text-dim">{generatedScenario.character.role}</div>
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-surface-subtle border border-surface-border">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-text-dim block mb-2">
-                  Role Evaluated
+              <div className="p-4 rounded-md bg-surface-subtle border border-surface-border">
+                <span className="text-xs text-text-dim block mb-2">
+                  Role evaluated
                 </span>
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center text-primary-light font-bold">
+                  <div className="w-9 h-9 rounded-md bg-accent-purple/10 border border-accent-purple/30 flex items-center justify-center text-accent-purple">
                     <User className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs font-semibold text-white">{generatedScenario.role}</div>
+                    <div className="text-xs font-semibold text-text-main">{generatedScenario.role}</div>
                     <div className="text-[11px] text-text-dim">{generatedScenario.category}</div>
                   </div>
                 </div>
@@ -244,12 +237,12 @@ export const GenerateScenarioPage: React.FC<GenerateScenarioPageProps> = ({ onSt
             </div>
 
             <div>
-              <span className="text-[11px] font-mono uppercase tracking-wider text-text-dim block mb-2">
-                Evaluated Competencies
+              <span className="text-xs text-text-dim block mb-2">
+                Evaluated competencies
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {generatedScenario.evaluationCriteria.map((crit, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-xs text-text-muted bg-background/60 p-2.5 rounded-lg border border-surface-border">
+                  <div key={idx} className="flex items-center gap-2 text-xs text-text-muted bg-background p-2.5 rounded-md border border-surface-border">
                     <CheckCircle2 className="w-3.5 h-3.5 text-accent-emerald shrink-0" />
                     <span>{crit}</span>
                   </div>
@@ -259,10 +252,9 @@ export const GenerateScenarioPage: React.FC<GenerateScenarioPageProps> = ({ onSt
 
             <button
               onClick={() => onStartGenerated(generatedScenario)}
-              className="w-full py-3.5 px-4 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-primary-hover transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/25"
+              className="w-full py-3.5 px-4 rounded-md text-sm font-semibold text-background bg-primary hover:bg-primary-hover transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>Launch Generated Simulation</span>
-              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         )}

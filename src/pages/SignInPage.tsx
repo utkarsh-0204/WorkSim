@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Lock, Mail, ChevronRight, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Lock, Mail, AlertCircle } from 'lucide-react';
 
 interface SignInPageProps {
   onNavigate: (path: string) => void;
@@ -49,30 +49,27 @@ export const SignInPage: React.FC<SignInPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-text-main flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[300px] bg-primary/10 blur-[130px] rounded-full pointer-events-none" />
+    <div className="min-h-screen bg-background text-text-main flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full mx-auto space-y-6">
 
-      <div className="max-w-md w-full mx-auto relative z-10 space-y-6">
-        
         {/* Back Link */}
         <button
           onClick={() => onNavigate('/')}
-          className="inline-flex items-center gap-1.5 text-xs font-mono text-text-dim hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-text-dim hover:text-text-main transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to WorkSim</span>
         </button>
 
         {/* Card */}
-        <div className="rounded-2xl border border-surface-border bg-surface/90 backdrop-blur-xl p-8 sm:p-10 shadow-2xl space-y-6">
-          
+        <div className="rounded-lg border border-surface-border bg-surface p-8 sm:p-10 shadow-sm space-y-6">
+
           {/* Header */}
           <div className="text-center space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-surface-subtle border border-surface-border flex items-center justify-center font-bold text-white shadow-inner mx-auto mb-3">
-              <span className="text-primary font-black text-xl">W</span>
+            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center mx-auto mb-3">
+              <span className="font-serif text-background font-semibold text-xl">W</span>
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-white">
+            <h1 className="font-serif text-2xl font-semibold tracking-tight text-text-main">
               Sign in to WorkSim
             </h1>
             <p className="text-xs text-text-muted">
@@ -83,14 +80,14 @@ export const SignInPage: React.FC<SignInPageProps> = ({ onNavigate }) => {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2">
+              <div className="p-3 rounded-md bg-accent-rose/10 border border-accent-rose/30 text-accent-rose text-xs flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{error}</span>
               </div>
             )}
 
             <div>
-              <label className="block text-xs font-mono uppercase tracking-wider text-text-dim mb-1.5">
+              <label className="block text-xs text-text-dim mb-1.5">
                 Work Email
               </label>
               <div className="relative">
@@ -100,14 +97,14 @@ export const SignInPage: React.FC<SignInPageProps> = ({ onNavigate }) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="candidate@university.edu"
-                  className="w-full bg-background border border-surface-border rounded-lg pl-10 pr-4 py-2.5 text-xs text-white placeholder-text-dim focus:outline-none focus:border-primary transition-colors"
+                  className="w-full bg-surface-subtle border border-surface-border rounded-md pl-10 pr-4 py-2.5 text-xs text-text-main placeholder-text-dim focus:outline-none focus:border-primary-light transition-colors"
                 />
               </div>
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-mono uppercase tracking-wider text-text-dim">
+                <label className="block text-xs text-text-dim">
                   Password
                 </label>
                 <a
@@ -125,7 +122,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({ onNavigate }) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full bg-background border border-surface-border rounded-lg pl-10 pr-4 py-2.5 text-xs text-white placeholder-text-dim focus:outline-none focus:border-primary transition-colors"
+                  className="w-full bg-surface-subtle border border-surface-border rounded-md pl-10 pr-4 py-2.5 text-xs text-text-main placeholder-text-dim focus:outline-none focus:border-primary-light transition-colors"
                 />
               </div>
             </div>
@@ -133,17 +130,16 @@ export const SignInPage: React.FC<SignInPageProps> = ({ onNavigate }) => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-primary-hover transition-all flex items-center justify-center gap-1.5 shadow-md shadow-primary/20 disabled:opacity-60"
+              className="w-full py-2.5 px-4 rounded-md text-xs font-semibold text-background bg-primary hover:bg-primary-hover transition-colors flex items-center justify-center gap-1.5 disabled:opacity-60 cursor-pointer"
             >
               <span>{isSubmitting ? 'Signing In...' : 'Sign In'}</span>
-              <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </form>
 
           {/* Divider */}
           <div className="relative flex items-center justify-center">
             <div className="border-t border-surface-border w-full" />
-            <span className="bg-surface px-3 text-[11px] font-mono text-text-dim shrink-0">
+            <span className="bg-surface px-3 text-[11px] text-text-dim shrink-0">
               OR
             </span>
           </div>
@@ -153,7 +149,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({ onNavigate }) => {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={isSubmitting}
-            className="w-full py-2.5 px-4 rounded-lg text-xs font-medium text-white bg-surface-subtle border border-surface-border hover:bg-surface-hover hover:border-surface-border/80 transition-all flex items-center justify-center gap-2.5 shadow-sm"
+            className="w-full py-2.5 px-4 rounded-md text-xs font-medium text-text-main bg-surface border border-surface-border hover:bg-surface-subtle transition-colors flex items-center justify-center gap-2.5 disabled:opacity-60 cursor-pointer"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path
@@ -177,11 +173,11 @@ export const SignInPage: React.FC<SignInPageProps> = ({ onNavigate }) => {
           </button>
 
           {/* Footer link */}
-          <div className="text-center text-xs text-text-muted pt-2 border-t border-surface-border/60">
+          <div className="text-center text-xs text-text-muted pt-2 border-t border-surface-border">
             <span>Don't have an account? </span>
             <button
               onClick={() => onNavigate('/signup')}
-              className="text-primary hover:text-primary-light font-medium transition-colors"
+              className="text-primary hover:text-primary-light font-medium transition-colors cursor-pointer"
             >
               Sign Up
             </button>

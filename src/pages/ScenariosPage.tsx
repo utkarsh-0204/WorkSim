@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, ChevronRight, Clock, Award, Users } from 'lucide-react';
+import { Search, ChevronRight, Clock } from 'lucide-react';
 import { SCENARIOS } from '../data/scenarios';
 import { Scenario } from '../types';
 
@@ -8,6 +8,15 @@ interface ScenariosPageProps {
 }
 
 const CATEGORIES = ['All', 'Software Engineering', 'Product', 'Data', 'Design', 'Customer Support'] as const;
+
+const initials = (name: string) =>
+  name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase();
+
+const DIFFICULTY_TONE: Record<string, string> = {
+  Easy: 'text-accent-emerald',
+  Intermediate: 'text-accent-amber',
+  Advanced: 'text-accent-rose',
+};
 
 export const ScenariosPage: React.FC<ScenariosPageProps> = ({ onNavigate }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -29,7 +38,7 @@ export const ScenariosPage: React.FC<ScenariosPageProps> = ({ onNavigate }) => {
         
         {/* Header */}
         <div className="max-w-3xl mb-10">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-2">
+          <h1 className="font-serif text-3xl sm:text-4xl font-semibold tracking-tight text-text-main mb-2">
             Explore Scenarios
           </h1>
           <p className="text-base text-text-muted">
@@ -48,7 +57,7 @@ export const ScenariosPage: React.FC<ScenariosPageProps> = ({ onNavigate }) => {
               placeholder="Search scenarios, roles or skills..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-surface border border-surface-border rounded-lg pl-10 pr-4 py-2.5 text-sm text-white placeholder-text-dim focus:outline-none focus:border-primary transition-colors"
+              className="w-full bg-surface border border-surface-border rounded-md pl-10 pr-4 py-2.5 text-sm text-text-main placeholder-text-dim focus:outline-none focus:border-primary-light transition-colors"
             />
           </div>
 
@@ -58,10 +67,10 @@ export const ScenariosPage: React.FC<ScenariosPageProps> = ({ onNavigate }) => {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
                   selectedCategory === category
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'bg-surface text-text-muted border border-surface-border hover:text-white hover:bg-surface-subtle'
+                    ? 'bg-primary text-background'
+                    : 'bg-surface text-text-muted border border-surface-border hover:text-text-main hover:bg-surface-subtle'
                 }`}
               >
                 {category}
@@ -76,12 +85,12 @@ export const ScenariosPage: React.FC<ScenariosPageProps> = ({ onNavigate }) => {
           {filteredScenarios.map((scenario: Scenario) => (
             <div 
               key={scenario.id}
-              className="rounded-xl border border-surface-border bg-surface flex flex-col justify-between p-6 hover:border-surface-border/90 hover:bg-surface-subtle/40 transition-all group"
+              className="rounded-lg border border-surface-border bg-surface flex flex-col justify-between p-6 hover:bg-surface-subtle transition-all group"
             >
               <div>
                 {/* Meta header */}
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-surface-subtle text-primary-light border border-surface-border">
+                  <span className="text-[11px] font-mono text-primary-light">
                     {scenario.category}
                   </span>
                   <div className="flex items-center gap-1 text-[11px] font-mono text-text-dim">
@@ -90,7 +99,7 @@ export const ScenariosPage: React.FC<ScenariosPageProps> = ({ onNavigate }) => {
                   </div>
                 </div>
 
-                <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-primary-light transition-colors">
+                <h3 className="text-lg font-semibold text-text-main mb-1 group-hover:text-primary-light transition-colors">
                   {scenario.title}
                 </h3>
 
@@ -107,28 +116,22 @@ export const ScenariosPage: React.FC<ScenariosPageProps> = ({ onNavigate }) => {
               <div className="pt-4 border-t border-surface-border">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2.5">
-                    <img 
-                      src={scenario.character.avatar} 
-                      alt={scenario.character.name} 
-                      className="w-8 h-8 rounded-full border border-surface-border object-cover" 
-                    />
+                    <div className="w-8 h-8 rounded-full bg-surface-subtle border border-surface-border flex items-center justify-center text-[10px] font-medium text-text-main shrink-0">
+                      {initials(scenario.character.name)}
+                    </div>
                     <div>
-                      <div className="text-xs font-medium text-white">{scenario.character.name}</div>
+                      <div className="text-xs font-medium text-text-main">{scenario.character.name}</div>
                       <div className="text-[10px] text-text-dim">{scenario.character.role}</div>
                     </div>
                   </div>
-                  <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${
-                    scenario.difficulty === 'Easy' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
-                    scenario.difficulty === 'Intermediate' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
-                    'bg-rose-500/10 text-rose-400 border border-rose-500/20'
-                  }`}>
+                  <span className={`text-[10px] font-medium ${DIFFICULTY_TONE[scenario.difficulty] || 'text-text-dim'}`}>
                     {scenario.difficulty}
                   </span>
                 </div>
 
-                <button 
+                <button
                   onClick={() => onNavigate(`/scenarios/${scenario.id}`)}
-                  className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-surface-subtle border border-surface-border group-hover:bg-primary group-hover:border-primary transition-all flex items-center justify-center gap-2 shadow-sm"
+                  className="w-full py-2.5 px-4 rounded-md text-xs font-semibold text-text-main bg-surface-subtle border border-surface-border group-hover:bg-primary group-hover:border-primary group-hover:text-background transition-all flex items-center justify-center gap-2"
                 >
                   <span>Start Scenario</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -140,7 +143,7 @@ export const ScenariosPage: React.FC<ScenariosPageProps> = ({ onNavigate }) => {
         </div>
 
         {filteredScenarios.length === 0 && (
-          <div className="text-center py-16 border border-surface-border rounded-xl bg-surface/30">
+          <div className="text-center py-16 border border-surface-border rounded-lg bg-surface">
             <p className="text-sm text-text-muted">No scenarios matched your filter criteria.</p>
           </div>
         )}

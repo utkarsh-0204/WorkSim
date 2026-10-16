@@ -1,21 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Send, 
-  Clock, 
-  Mic, 
-  MicOff, 
-  PhoneOff, 
-  Radio, 
-  Info, 
-  CheckCircle2, 
-  Circle, 
-  Sparkles, 
-  Terminal, 
-  Activity, 
-  MessageSquare,
+import {
+  Send,
+  Clock,
+  Mic,
+  MicOff,
+  PhoneOff,
+  Radio,
+  Info,
+  CheckCircle2,
+  Circle,
+  Activity,
   AlertTriangle,
-  ChevronRight,
-  Maximize2
 } from 'lucide-react';
 import { Scenario, Message, ScenarioObjective, SimulationReport } from '../types';
 import { AdaptiveSimulationEngine } from '../engine/simulationEngine';
@@ -27,6 +22,9 @@ interface LiveSimulationProps {
   onNavigate: (path: string) => void;
 }
 
+const initials = (name: string) =>
+  name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase();
+
 export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComplete, onNavigate }) => {
   // Session State
   const [engine] = useState(() => new AdaptiveSimulationEngine(scenario));
@@ -37,7 +35,7 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
   const [objectives, setObjectives] = useState<ScenarioObjective[]>(scenario.initialObjectives);
   const [discoveredInfo, setDiscoveredInfo] = useState<string[]>([]);
   const [currentSituation, setCurrentSituation] = useState<string[]>(scenario.initialSituationSummary);
-  
+
   // Stage 3 Voice Mode State
   const [isVoiceMode, setIsVoiceMode] = useState(false);
   const [isMicMuted, setIsMicMuted] = useState(false);
@@ -162,7 +160,7 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
 
   return (
     <div className="flex h-screen bg-background text-text-main overflow-hidden">
-      
+
       {/* LEFT SIDEBAR (Desktop) */}
       <div className="hidden lg:block shrink-0">
         <Sidebar currentPath={`/simulation/${scenario.id}`} onNavigate={onNavigate} />
@@ -170,18 +168,18 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
 
       {/* CENTER & RIGHT COLUMNS */}
       <div className="flex-1 flex flex-col min-w-0">
-        
+
         {/* TOP STATUS BAR */}
         <header className="h-16 border-b border-surface-border bg-surface px-4 sm:px-6 flex items-center justify-between shrink-0">
           <div className="flex items-center space-x-3">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-accent-emerald animate-pulse"></span>
-              <span className="font-mono text-xs font-semibold text-accent-emerald tracking-wide">
-                LIVE SIMULATION
+              <span className="text-xs font-semibold text-accent-emerald">
+                Live simulation
               </span>
             </div>
             <span className="text-surface-border">|</span>
-            <span className="text-sm font-semibold text-white truncate max-w-xs sm:max-w-md">
+            <span className="text-sm font-semibold text-text-main truncate max-w-xs sm:max-w-md">
               {scenario.title}
             </span>
           </div>
@@ -196,10 +194,10 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
             {/* Voice Mode Toggle */}
             <button
               onClick={() => setIsVoiceMode(!isVoiceMode)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                isVoiceMode 
-                  ? 'bg-accent-purple/20 border-accent-purple/40 text-accent-purple' 
-                  : 'bg-surface-subtle border-surface-border text-text-muted hover:text-white'
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${
+                isVoiceMode
+                  ? 'bg-primary-muted border-primary-light text-text-main'
+                  : 'bg-surface-subtle border-surface-border text-text-muted hover:text-text-main'
               }`}
               title="Toggle Voice Mode"
             >
@@ -211,28 +209,26 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
 
         {/* BODY (Split: Conversation Center, Context Right) */}
         <div className="flex-1 flex overflow-hidden">
-          
+
           {/* MAIN CONVERSATION AREA */}
           <div className="flex-1 flex flex-col bg-background relative min-w-0">
-            
+
             {/* AI Character Header Banner */}
-            <div className="border-b border-surface-border bg-surface/40 px-6 py-3 flex items-center justify-between shrink-0">
+            <div className="border-b border-surface-border bg-surface-subtle px-6 py-3 flex items-center justify-between shrink-0">
               <div className="flex items-center space-x-3">
                 <div className="relative">
-                  <img 
-                    src={scenario.character.avatar} 
-                    alt={scenario.character.name} 
-                    className="w-9 h-9 rounded-full border border-surface-border object-cover" 
-                  />
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-accent-emerald ring-2 ring-surface"></span>
+                  <div className="w-9 h-9 rounded-full bg-primary-muted flex items-center justify-center text-xs font-medium text-text-main">
+                    {initials(scenario.character.name)}
+                  </div>
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-accent-emerald ring-2 ring-surface-subtle"></span>
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-white flex items-center gap-1.5">
+                  <div className="text-xs font-semibold text-text-main flex items-center gap-1.5">
                     {scenario.character.name}
                     <span className="text-[10px] font-normal text-text-dim">({scenario.character.role})</span>
                   </div>
                   <div className="text-[11px] text-text-dim flex items-center gap-1">
-                    <span className="text-accent-emerald font-bold">●</span> Online & Evaluating Live Decisions
+                    <span className="text-accent-emerald">●</span> Online & evaluating live decisions
                   </div>
                 </div>
               </div>
@@ -243,7 +239,7 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
                   const r = engine.processUserResponse("Wrap up session", messages, objectives, discoveredInfo, elapsedSeconds);
                   if (r.report) onComplete(r.report);
                 }}
-                className="text-xs text-text-dim hover:text-rose-400 font-mono transition-colors"
+                className="text-xs text-text-dim hover:text-accent-rose transition-colors cursor-pointer"
               >
                 Conclude Early
               </button>
@@ -251,15 +247,15 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
 
             {/* STAGE 3 VOICE OVERLAY BANNER (if active) */}
             {isVoiceMode && (
-              <div className="bg-surface-subtle/90 border-b border-surface-border px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="bg-surface-subtle border-b border-surface-border px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-primary-light">
+                  <div className="w-10 h-10 rounded-full bg-primary-muted flex items-center justify-center text-text-main">
                     <Radio className="w-5 h-5 animate-pulse" />
                   </div>
                   <div>
-                    <div className="text-xs font-medium text-white flex items-center gap-2">
+                    <div className="text-xs font-medium text-text-main flex items-center gap-2">
                       Voice Workplace Call Active
-                      <span className="text-[10px] text-accent-emerald font-mono bg-emerald-500/10 px-1.5 py-0.5 rounded">
+                      <span className="text-[10px] text-accent-emerald font-medium">
                         {isMicMuted ? 'Muted' : 'Listening...'}
                       </span>
                     </div>
@@ -268,11 +264,11 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
                 </div>
 
                 {/* Simulated Audio Waveform */}
-                <div className="flex items-center gap-1 h-8 px-4 bg-black/40 rounded-lg border border-surface-border">
+                <div className="flex items-center gap-1 h-8 px-4 bg-surface border border-surface-border rounded-lg">
                   {waveformBars.map((height, idx) => (
-                    <div 
-                      key={idx} 
-                      className={`w-1 rounded-full transition-all duration-150 ${isMicMuted ? 'bg-zinc-700' : 'bg-primary-light'}`}
+                    <div
+                      key={idx}
+                      className={`w-1 rounded-full transition-all duration-150 ${isMicMuted ? 'bg-text-dim/30' : 'bg-primary-light'}`}
                       style={{ height: isMicMuted ? '4px' : `${height}%` }}
                     />
                   ))}
@@ -280,19 +276,19 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
 
                 {/* Voice Call Controls */}
                 <div className="flex items-center gap-2">
-                  <button 
+                  <button
                     onClick={() => setIsMicMuted(!isMicMuted)}
-                    className={`p-2 rounded-lg border text-xs font-medium flex items-center gap-1.5 transition-colors ${
-                      isMicMuted ? 'bg-rose-500/20 border-rose-500/30 text-rose-400' : 'bg-surface border-surface-border text-white'
+                    className={`p-2 rounded-lg border text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer ${
+                      isMicMuted ? 'bg-accent-rose/10 border-accent-rose/30 text-accent-rose' : 'bg-surface border-surface-border text-text-main'
                     }`}
                   >
                     {isMicMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
                     <span>{isMicMuted ? 'Unmute' : 'Mute'}</span>
                   </button>
 
-                  <button 
+                  <button
                     onClick={() => setIsVoiceMode(false)}
-                    className="p-2 rounded-lg bg-red-600/20 border border-red-500/30 text-red-400 text-xs font-medium flex items-center gap-1.5 hover:bg-red-600/30 transition-colors"
+                    className="p-2 rounded-lg bg-accent-rose/10 border border-accent-rose/30 text-accent-rose text-xs font-medium flex items-center gap-1.5 hover:bg-accent-rose/20 transition-colors cursor-pointer"
                   >
                     <PhoneOff className="w-4 h-4" />
                     <span>Switch to Text</span>
@@ -306,41 +302,39 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
               {messages.map((msg) => {
                 const isUser = msg.sender === 'user';
                 return (
-                  <div 
+                  <div
                     key={msg.id}
                     className={`flex items-start gap-3.5 max-w-2xl ${isUser ? 'ml-auto flex-row-reverse' : ''}`}
                   >
                     {/* Avatar */}
                     {!isUser ? (
-                      <img 
-                        src={scenario.character.avatar} 
-                        alt={scenario.character.name} 
-                        className="w-8 h-8 rounded-full border border-surface-border object-cover shrink-0 mt-0.5" 
-                      />
+                      <div className="w-8 h-8 rounded-full bg-primary-muted flex items-center justify-center text-xs font-medium text-text-main shrink-0 mt-0.5">
+                        {initials(scenario.character.name)}
+                      </div>
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary-light font-semibold text-xs shrink-0 mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-background font-semibold text-xs shrink-0 mt-0.5">
                         You
                       </div>
                     )}
 
                     {/* Bubble Content */}
                     <div className="flex flex-col space-y-1">
-                      
+
                       {/* Sender & Timestamp */}
                       <div className={`flex items-center gap-2 text-[11px] ${isUser ? 'justify-end' : ''}`}>
-                        <span className="font-medium text-white">{msg.senderName}</span>
+                        <span className="font-medium text-text-main">{msg.senderName}</span>
                         <span className="text-text-dim font-mono">{msg.timestamp}</span>
                         {msg.metadata?.decisionTag && (
-                          <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-surface-subtle text-text-muted border border-surface-border">
-                            {msg.metadata.decisionTag}
+                          <span className="text-[10px] text-text-dim">
+                            · {msg.metadata.decisionTag}
                           </span>
                         )}
                       </div>
 
                       {/* Text */}
                       <div className={`p-4 rounded-xl text-sm leading-relaxed whitespace-pre-line ${
-                        isUser 
-                          ? 'bg-primary/20 border border-primary/30 text-white rounded-tr-none' 
+                        isUser
+                          ? 'bg-surface-subtle text-text-main rounded-tr-none'
                           : 'bg-surface border border-surface-border text-text-main rounded-tl-none'
                       }`}>
                         {msg.text}
@@ -348,7 +342,7 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
 
                       {/* Consequence badge if triggered */}
                       {msg.metadata?.isConsequence && (
-                        <div className="flex items-center gap-1.5 text-[11px] font-mono text-accent-amber mt-1 bg-accent-amber/5 border border-accent-amber/20 px-2.5 py-1 rounded-md">
+                        <div className="flex items-center gap-1.5 text-[11px] text-accent-amber mt-1 bg-accent-amber/5 border border-accent-amber/20 px-2.5 py-1 rounded-md">
                           <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
                           <span>Consequence: Scenario state updated dynamically</span>
                         </div>
@@ -361,13 +355,11 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
               {/* AI Thinking indicator */}
               {isThinking && (
                 <div className="flex items-start gap-3.5 max-w-2xl">
-                  <img 
-                    src={scenario.character.avatar} 
-                    alt={scenario.character.name} 
-                    className="w-8 h-8 rounded-full border border-surface-border object-cover shrink-0 mt-0.5" 
-                  />
+                  <div className="w-8 h-8 rounded-full bg-primary-muted flex items-center justify-center text-xs font-medium text-text-main shrink-0 mt-0.5">
+                    {initials(scenario.character.name)}
+                  </div>
                   <div className="bg-surface border border-surface-border rounded-xl rounded-tl-none p-4 flex items-center space-x-2">
-                    <span className="text-xs text-text-dim font-mono">{scenario.character.name} is evaluating your decision</span>
+                    <span className="text-xs text-text-dim">{scenario.character.name} is evaluating your decision</span>
                     <div className="flex space-x-1">
                       <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"></div>
                       <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:0.2s]"></div>
@@ -381,16 +373,16 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
             </div>
 
             {/* QUICK ACTIONS ROW (Optional helper shortcuts) */}
-            <div className="px-4 sm:px-6 py-2 border-t border-surface-border/60 bg-surface/30 overflow-x-auto flex gap-2 shrink-0">
-              <span className="text-[10px] font-mono uppercase tracking-wider text-text-dim flex items-center shrink-0 mr-1">
-                Quick Actions:
+            <div className="px-4 sm:px-6 py-2 border-t border-surface-border bg-surface-subtle overflow-x-auto flex gap-2 shrink-0">
+              <span className="text-[10px] text-text-dim flex items-center shrink-0 mr-1">
+                Quick actions:
               </span>
               {quickActions.map((action, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSendMessage(action.text)}
                   disabled={isThinking}
-                  className="shrink-0 text-xs text-text-muted bg-surface hover:text-white hover:bg-surface-subtle border border-surface-border px-2.5 py-1 rounded-md transition-colors disabled:opacity-50"
+                  className="shrink-0 text-xs text-text-muted bg-surface hover:text-text-main hover:bg-surface-hover border border-surface-border px-2.5 py-1 rounded-md transition-colors disabled:opacity-50 cursor-pointer"
                 >
                   {action.label}
                 </button>
@@ -399,7 +391,7 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
 
             {/* USER INPUT BOX */}
             <div className="p-4 sm:p-6 border-t border-surface-border bg-surface shrink-0">
-              <form 
+              <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   handleSendMessage();
@@ -414,7 +406,7 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Type your workplace response or decision..."
                     disabled={isThinking}
-                    className="w-full bg-background border border-surface-border rounded-lg pl-4 pr-10 py-3 text-sm text-white placeholder-text-dim focus:outline-none focus:border-primary transition-colors disabled:opacity-60"
+                    className="w-full bg-background border border-surface-border rounded-lg pl-4 pr-10 py-3 text-sm text-text-main placeholder-text-dim focus:outline-none focus:border-primary transition-colors disabled:opacity-60"
                   />
                   <div className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-text-dim">
                     Enter ↵
@@ -424,7 +416,7 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
                 <button
                   type="submit"
                   disabled={!inputValue.trim() || isThinking}
-                  className="px-5 py-3 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-1.5 shadow-sm"
+                  className="px-5 py-3 rounded-lg text-sm font-semibold text-background bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>Send</span>
                   <Send className="w-4 h-4" />
@@ -432,7 +424,7 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
               </form>
               <div className="mt-2 text-[11px] text-text-dim flex items-center justify-between">
                 <span>The simulator analyzes your specific technical reasoning and decision consequences.</span>
-                <span className="font-mono">Press Shift+Enter for new line</span>
+                <span>Press Shift+Enter for new line</span>
               </div>
             </div>
 
@@ -440,17 +432,17 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
 
           {/* RIGHT CONTEXT PANEL */}
           <aside className="hidden md:flex w-80 lg:w-96 border-l border-surface-border bg-surface flex-col shrink-0 overflow-y-auto p-5 space-y-6">
-            
+
             {/* CURRENT SITUATION */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-text-dim flex items-center gap-1.5">
+                <span className="text-xs text-text-dim flex items-center gap-1.5">
                   <Activity className="w-3.5 h-3.5 text-primary" />
-                  Current Situation
+                  Current situation
                 </span>
-                <span className="text-[10px] font-mono text-accent-emerald">Dynamic State</span>
+                <span className="text-[10px] text-accent-emerald">Dynamic state</span>
               </div>
-              <div className="bg-background/80 rounded-xl p-4 border border-surface-border space-y-2">
+              <div className="bg-background rounded-lg p-4 border border-surface-border space-y-2">
                 {currentSituation.map((sit, idx) => (
                   <div key={idx} className="flex items-start gap-2 text-xs text-text-muted leading-relaxed">
                     <span className="text-primary mt-1">•</span>
@@ -463,25 +455,25 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
             {/* NEW INFORMATION / DISCOVERED FACTS */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-text-dim flex items-center gap-1.5">
+                <span className="text-xs text-text-dim flex items-center gap-1.5">
                   <Info className="w-3.5 h-3.5 text-accent-amber" />
-                  Discovered Telemetry
+                  Discovered telemetry
                 </span>
                 <span className="text-[10px] font-mono text-text-dim">{discoveredInfo.length} items</span>
               </div>
               {discoveredInfo.length > 0 ? (
                 <div className="space-y-2">
                   {discoveredInfo.map((info, idx) => (
-                    <div 
-                      key={idx} 
-                      className="bg-accent-amber/5 border border-accent-amber/25 rounded-lg p-3 text-xs text-accent-amber leading-relaxed font-sans"
+                    <div
+                      key={idx}
+                      className="bg-accent-amber/5 border border-accent-amber/25 rounded-lg p-3 text-xs text-accent-amber leading-relaxed"
                     >
                       “{info}”
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="bg-background/40 border border-surface-border rounded-lg p-4 text-center text-xs text-text-dim italic">
+                <div className="bg-background border border-surface-border rounded-lg p-4 text-center text-xs text-text-dim italic">
                   No new forensic telemetry uncovered yet. Investigate metrics or query the team.
                 </div>
               )}
@@ -490,15 +482,15 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
             {/* OBJECTIVES TRACKER */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-text-dim flex items-center gap-1.5">
+                <span className="text-xs text-text-dim flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-accent-emerald" />
-                  Live Objectives
+                  Live objectives
                 </span>
                 <span className="text-[10px] font-mono text-text-dim">
                   {objectives.filter(o => o.completed).length}/{objectives.length}
                 </span>
               </div>
-              <div className="bg-background/80 rounded-xl p-3 border border-surface-border space-y-2.5">
+              <div className="bg-background rounded-lg p-3 border border-surface-border space-y-2.5">
                 {objectives.map((obj) => (
                   <div key={obj.id} className="flex items-start gap-2.5 text-xs">
                     {obj.completed ? (
@@ -506,7 +498,7 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
                     ) : (
                       <Circle className="w-4 h-4 text-text-dim shrink-0 mt-0.5" />
                     )}
-                    <span className={obj.completed ? 'text-white line-through opacity-80' : 'text-text-muted'}>
+                    <span className={obj.completed ? 'text-text-dim line-through' : 'text-text-muted'}>
                       {obj.text}
                     </span>
                   </div>
@@ -515,18 +507,16 @@ export const LiveSimulation: React.FC<LiveSimulationProps> = ({ scenario, onComp
             </div>
 
             {/* CHARACTER CONTEXT BRIEF */}
-            <div className="pt-2 border-t border-surface-border/80">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-text-dim block mb-2">
-                Stakeholder Persona
+            <div className="pt-2 border-t border-surface-border">
+              <span className="text-xs text-text-dim block mb-2">
+                Stakeholder persona
               </span>
-              <div className="bg-surface-subtle/50 rounded-xl p-3 border border-surface-border flex items-center gap-3">
-                <img 
-                  src={scenario.character.avatar} 
-                  alt={scenario.character.name} 
-                  className="w-10 h-10 rounded-full border border-surface-border object-cover" 
-                />
+              <div className="bg-surface-subtle rounded-lg p-3 border border-surface-border flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-primary-muted flex items-center justify-center text-xs font-medium text-text-main shrink-0">
+                  {initials(scenario.character.name)}
+                </div>
                 <div className="text-xs">
-                  <div className="font-semibold text-white">{scenario.character.name}</div>
+                  <div className="font-semibold text-text-main">{scenario.character.name}</div>
                   <div className="text-text-dim text-[11px]">{scenario.character.department}</div>
                   <p className="text-[10px] text-text-muted mt-1 leading-snug line-clamp-2">
                     {scenario.character.bio}
